@@ -2,6 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 
+const Book = require('./models/Books');
+
+
 app.use(express.json());
 
 
@@ -19,33 +22,47 @@ app.use((req, res, next) => {
     next();
   });
 
-//TEST POST
-// app.post('/api/auth/signup', (req, res, next) => {
-//     console.log(req.body);
-//     res.status(201).json({
-//     message: 'Signup'
-//   });
-// })
+  app.post('/api/books', (req, res, next) => {
+    // delete req.body._id
+    const book = new Book({
+        ...req.body
+    });
+    book.save()
+    .then(() => res.status(201).json({ message: 'Livre enregistré'}))
+    .catch(error => res.status(400).json({error}));
+  });
 
-app.get('/api/books', (req, res, next) => {
-    const books = [ {
-        userId : 'jebghbegehjbhjeb',
-        title : 'L\'étranger',
-        author : 'Albert Camus',
-        imageUrl : 'https://i.ibb.co/6m8VRBn/glasses-1052010-1280.jpg',
-        year: '1942',
-        genre: 'Roman',
-        ratings : [
-        {
-        userId : 'jebghbegehjbhjeb',
-        grade : '5'
-        }
-        ], 
-        averageRating : '4'
-        },
-    ];
-    res.status(200).json(books);       
-})
+  app.get('/api/books', (req, res, next) =>{
+    Book.find()
+        .then(books => res.status(200).json(books))
+        .catch(error=> res.status(400).json({error}));
+  });
+
+  app.get('/api/books/:id', (req, res, next) => {
+    Book.findOne({_id: reqparams.id})
+        .then(book => res.status(200).json(book))
+        .catch(error => res.status(404).json({error}));
+  })
+
+// app.get('/api/books', (req, res, next) => {
+//     const books = [ {
+//         userId : 'jebghbegehjbhjeb',
+//         title : 'L\'étranger',
+//         author : 'Albert Camus',
+//         imageUrl : 'https://i.ibb.co/6m8VRBn/glasses-1052010-1280.jpg',
+//         year: '1942',
+//         genre: 'Roman',
+//         ratings : [
+//         {
+//         userId : 'jebghbegehjbhjeb',
+//         grade : '5'
+//         }
+//         ], 
+//         averageRating : '4'
+//         },
+//     ];
+//     res.status(200).json(books);       
+// })
 
 
 module.exports = app;

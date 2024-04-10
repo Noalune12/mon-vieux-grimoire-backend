@@ -65,8 +65,8 @@ exports.deleteBook = (req, res, next) => {
 exports.getAllBooks = (req, res, next) => {
     Book.find()
         .then(books => res.status(200).json(books))
-        .catch(error=> res.status(400).json({error}));
-    };
+        .catch(error => res.status(400).json({ error }));
+};
 
 exports.getOneBook =  (req, res, next) => {
     Book.findOne({_id: req.params.id})
@@ -76,8 +76,33 @@ exports.getOneBook =  (req, res, next) => {
 
 exports.getBestRating = (req, res, next) => {
     Book.find()
-        .sort({averageRating: -1})
-        .limit(3)
-        .then(books => res.status(200).json(books))
-        .catch(error => res.status(500).json({error}));
+    .sort({ averageRating: -1 })
+    .limit(3)
+    .then((bestBooks) => res.status(200).json(bestBooks))
+    .catch(error => res.status(400).json({ error }));
+};
+
+exports.ratingBook = (req, res) => {
+    const updatedRating = {
+        userId: req.auth.userId,
+        grade: req.body.rating
     };
+    if (updatedRating.grade < 0 || updatedRating.grade > 5) {
+        return res.status(400).json({ message: 'rating must be between 1 and 5' });
+    }
+    Book.findOne({ _id: req.params.id })
+        .then((book) => {
+            //check if user already rated
+            if (book.ratings.find(rating => rating.userId === req.auth.userId)) {
+                return res.status(400).json({ message: 'User already rated this book' });
+            } else {
+                book.ratings.push(updatedRating);
+                //average rating 
+                book.averageRating = (book.averageRating * (book.ratings.length - 1) + updatedRating.grade) / book.ratings.length;
+                return book.save();
+            }
+        })
+        .then((updatedBook) => res.status(201).json(updatedBook))
+        .catch(error => res.status(400).json({ error }));
+	
+};

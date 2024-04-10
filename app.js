@@ -2,10 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 
-const Book = require('./models/Books');
-
-
-app.use(express.json());
+const bookRoutes = require('./routes/Book');
 
 
 mongoose.connect('mongodb+srv://louannebuisson:q3wVyqscckk7htvl@mon-vieux-grimoire.sj4vddb.mongodb.net/?retryWrites=true&w=majority&appName=mon-vieux-grimoire',
@@ -13,6 +10,7 @@ mongoose.connect('mongodb+srv://louannebuisson:q3wVyqscckk7htvl@mon-vieux-grimoi
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
+
 
 //CORS
 app.use((req, res, next) => {
@@ -22,71 +20,11 @@ app.use((req, res, next) => {
     next();
   });
 
-  app.post('/api/books', (req, res, next) => {
-    // delete req.body._id
-    const book = new Book({
-        ...req.body
-    });
-    book.save()
-    .then(() => res.status(201).json({ message: 'Livre enregistré'}))
-    .catch(error => res.status(400).json({error}));
-  });
+app.use(express.json());
 
-//   app.post('api/books/:id/rating', (res, req, next) => {
+app.use('/api/books', bookRoutes);
 
-//   })
 
-app.put('/api/books/:id', (req, res, next) => {
-    Book.updateOne({_id: req.params.id}, {...req.body, _id: req.params.id})
-        .then(() => res.status(200).json({message: 'Livre modifié'}))
-        .catch(error => res.status(400).json({error}));
-});
-
-app.delete('/api/books/:id', (req, res, next) => {
-    Book.deleteOne({_id: req.params.id})
-        .then(() => res.status(200).json({message: 'Livre supprimé'}))
-        .catch(error => res.status(400).json({error}));
-});
-
-  app.get('/api/books', (req, res, next) =>{
-    Book.find()
-        .then(books => res.status(200).json(books))
-        .catch(error=> res.status(400).json({error}));
-  });
-
-  app.get('/api/books/:id', (req, res, next) => {
-    Book.findOne({_id: reqparams.id})
-        .then(book => res.status(200).json(book))
-        .catch(error => res.status(404).json({error}));
-  })
-
-  app.get('/api/books/bestrating', (req, res, next) => {
-    Book.find()
-        .sort({averageRating: -1})
-        .limit(3)
-        .then(books => res.status(200).json(books))
-        .catch(error => res.status(500).json({error}));
-  })
-
-// app.get('/api/books', (req, res, next) => {
-//     const books = [ {
-//         userId : 'jebghbegehjbhjeb',
-//         title : 'L\'étranger',
-//         author : 'Albert Camus',
-//         imageUrl : 'https://i.ibb.co/6m8VRBn/glasses-1052010-1280.jpg',
-//         year: '1942',
-//         genre: 'Roman',
-//         ratings : [
-//         {
-//         userId : 'jebghbegehjbhjeb',
-//         grade : '5'
-//         }
-//         ], 
-//         averageRating : '4'
-//         },
-//     ];
-//     res.status(200).json(books);       
-// })
 
 
 module.exports = app;

@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const app = express();
 
 const bookRoutes = require('./routes/Book');
+const userRoutes = require('./routes/User');
 
 
 mongoose.connect('mongodb+srv://louannebuisson:q3wVyqscckk7htvl@mon-vieux-grimoire.sj4vddb.mongodb.net/?retryWrites=true&w=majority&appName=mon-vieux-grimoire',
@@ -23,8 +24,6 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 app.use('/api/books', bookRoutes);
-
-
-
+app.use('/api/auth', userRoutes);
 
 module.exports = app;

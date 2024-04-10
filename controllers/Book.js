@@ -1,13 +1,22 @@
 const Book = require('../models/Book');
 
 exports.addBook = (req, res, next) => {
-    // delete req.body._id
+    const token = req.headers.authorization;
+    if (!token) {
+        return res.status(401).json({ message: 'Token manquant dans les en-têtes de la requête' });
+    }
+    console.log(token)
+    console.log("Données reçues pour le livre :", req.body);
+
+    delete req.body._id
     const book = new Book({
         ...req.body
     });
+    console.log("Objet Book créé :", book);
+
     book.save()
-    .then(() => res.status(201).json({ message: 'Livre enregistré'}))
-    .catch(error => res.status(400).json({error}));
+        .then(() => res.status(201).json({ message: 'Livre enregistré'}))
+        .catch(error => res.status(400).json({error}));
   };
 
 exports.modifyBook =  (req, res, next) => {
@@ -29,7 +38,7 @@ exports.getAllBooks = (req, res, next) => {
     };
 
 exports.getOneBook =  (req, res, next) => {
-    Book.findOne({_id: reqparams.id})
+    Book.findOne({_id: req.params.id})
         .then(book => res.status(200).json(book))
         .catch(error => res.status(404).json({error}));
     };

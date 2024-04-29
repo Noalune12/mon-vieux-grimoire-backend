@@ -88,7 +88,7 @@ exports.ratingBook = (req, res) => {
         grade: req.body.rating
     };
     if (updatedRating.grade < 0 || updatedRating.grade > 5) {
-        return res.status(400).json({ message: 'rating must be between 1 and 5' });
+        return res.status(400).json({ message: 'rating must be between 0 and 5' });
     }
     Book.findOne({ _id: req.params.id })
         .then((book) => {

@@ -88,13 +88,13 @@ exports.ratingBook = (req, res) => {
         grade: req.body.rating
     };
     if (updatedRating.grade < 0 || updatedRating.grade > 5) {
-        return res.status(400).json({ message: 'rating must be between 0 and 5' });
+        return res.status(400).json({ message: 'La note doit être entre 0 et 5' });
     }
     Book.findOne({ _id: req.params.id })
         .then((book) => {
             //check if user already rated
             if (book.ratings.find(rating => rating.userId === req.auth.userId)) {
-                return res.status(400).json({ message: 'User already rated this book' });
+                return res.status(400).json({ message: 'Livre déjà noté par l\'utilisateur' });
             } else {
                 book.ratings.push(updatedRating);
                 //average rating 

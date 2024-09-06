@@ -1,16 +1,16 @@
-*Développer le back-end d'un site de notation de livres avec Express et MongoDB.*
+# Développer le back-end d'un site de notation de livres avec Express et MongoDB.
+    
     
 **Objectifs pédagogiques**
-* Implémenter un modèle logique de données conformément à la réglementation
-* Mettre en œuvre des opérations CRUD de manière sécurisée
-* Stocker des données de manière sécurisée
-* Ajouter une base de données (MongoDB)
-* Créer un serveur HTPP avec Node et Express
-* Mettre en place d'un système d'authentification
+- Implémenter un modèle logique de données conformément à la réglementation
+- Mettre en œuvre des opérations CRUD de manière sécurisée
+- Stocker des données de manière sécurisée
+- Ajouter une base de données (MongoDB)
+- Créer un serveur HTTP avec Node et Express
+- Mettre en place un système d'authentification
 
 
 **Installation**
-
 
 ***Back-end***
 1. Cloner le repository:  
@@ -20,8 +20,7 @@
    `npm install`
 
 3. Lancer le back-end:  
-   `node server` ou `nodermon server` (ce dernier doit être installé avec la commande `npm install nodemon -g` (installation globale) ou `npm install nodemon --save-dev` (installation locale) ) 
-   
+   `node server` ou `nodemon server` (ce dernier doit être installé avec la commande `npm install nodemon -g` (installation globale) ou `npm install nodemon --save-dev` (installation locale) )
 
 ***Front-end***
-    https://github.com/OpenClassrooms-Student-Center/P7-Dev-Web-livres
+Lien du dépôt : https://github.com/OpenClassrooms-Student-Center/P7-Dev-Web-livres

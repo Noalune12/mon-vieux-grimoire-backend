@@ -23,4 +23,4 @@
    `node server` ou `nodemon server` (ce dernier doit être installé avec la commande `npm install nodemon -g` (installation globale) ou `npm install nodemon --save-dev` (installation locale) )
 
 ***Front-end***
-Lien du dépôt : https://github.com/OpenClassrooms-Student-Center/P7-Dev-Web-livres
+- Lien du dépôt : https://github.com/OpenClassrooms-Student-Center/P7-Dev-Web-livres
